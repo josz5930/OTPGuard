@@ -23,7 +23,7 @@ class DetectOtpUseCase @Inject constructor(
     }
 
     suspend fun execute(packageName: String, notificationText: String): OtpDetectionResult {
-        Log.d(TAG, "execute() called with packageName=$packageName")
+        //Log.d(TAG, "execute() called with packageName=$packageName")
 
         val app = monitoredAppRepository.getByPackageName(packageName)
         if (app == null) {

@@ -21,6 +21,7 @@ The following are known features that are missing or known bugs:
 * Android 13 and above - No `POST_NOTIFICATIONS` runtime permissions requested and so users need to manually give permission to the app
 * Does not lock the phone and sound the alarm loudly (intentional as there will be false positives since we do not know when you ACTUALLY did request for an OTP)
 * Logcat is very noisy
+
 ---
 # Technical Details (Generated)
 
