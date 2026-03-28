@@ -53,7 +53,7 @@ The app leverages Android's `NotificationListenerService` API. Once the user gra
 
 ## 🗄 Database Schema
 
-The application data is structured around six core entities. Below is a summary of the v1.1 schema.
+The application data is structured around six core entities.
 
 ### 1. `monitored_app`
 Stores the messaging apps whose notifications are scanned.

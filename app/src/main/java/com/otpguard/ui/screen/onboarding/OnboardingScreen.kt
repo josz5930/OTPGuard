@@ -1,8 +1,12 @@
 package com.otpguard.ui.screen.onboarding
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.Settings
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -14,6 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import com.otpguard.ui.navigation.Screen
 import com.otpguard.util.NotificationAccessHelper
@@ -23,9 +28,21 @@ import com.otpguard.util.NotificationAccessHelper
 fun OnboardingScreen(navController: NavController) {
     val context = LocalContext.current
     var isAccessGranted by remember { mutableStateOf(false) }
+    var isSensitiveNotifGranted by remember { mutableStateOf(false) }
+
+    val sensitiveNotifLauncher = if (Build.VERSION.SDK_INT >= 35) {
+        rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            isSensitiveNotifGranted = granted
+        }
+    } else null
 
     LaunchedEffect(Unit) {
         isAccessGranted = NotificationAccessHelper.isNotificationAccessEnabled(context)
+        if (Build.VERSION.SDK_INT >= 35) {
+            isSensitiveNotifGranted = ContextCompat.checkSelfPermission(
+                context, Manifest.permission.RECEIVE_SENSITIVE_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+        }
     }
 
     Scaffold(
@@ -77,7 +94,7 @@ fun OnboardingScreen(navController: NavController) {
             )
 
             // Android 15+ specific warning
-            if (Build.VERSION.SDK_INT >= 35 && isAccessGranted) {
+            if (Build.VERSION.SDK_INT >= 35) {
                 Spacer(Modifier.height(16.dp))
                 Card(
                     colors = CardDefaults.cardColors(
@@ -93,7 +110,7 @@ fun OnboardingScreen(navController: NavController) {
                         )
                         Spacer(Modifier.width(12.dp))
                         Text(
-                            text = "Android 15 Privacy Notice: If OTPs aren't being detected, go to Settings > Apps > OTP Guard > Notification access, then toggle it OFF and back ON to grant full notification content access.",
+                            text = "Android 15 & above: Due to new privacy restrictions, this app may not detect OTPs in some cases. After granting access, go to Settings > Apps > OTP Guard > Notification access and toggle it OFF and back ON if detections are missed.",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onTertiaryContainer
                         )
@@ -150,6 +167,59 @@ fun OnboardingScreen(navController: NavController) {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text("I've enabled it — Check again")
+                }
+            }
+
+            // RECEIVE_SENSITIVE_NOTIFICATIONS permission (Android 15+ only)
+            if (Build.VERSION.SDK_INT >= 35) {
+                Spacer(Modifier.height(16.dp))
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = if (isSensitiveNotifGranted)
+                            MaterialTheme.colorScheme.primaryContainer
+                        else
+                            MaterialTheme.colorScheme.surfaceVariant
+                    )
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                imageVector = if (isSensitiveNotifGranted) Icons.Default.CheckCircle else Icons.Default.LockOpen,
+                                contentDescription = null,
+                                modifier = Modifier.size(20.dp),
+                                tint = if (isSensitiveNotifGranted)
+                                    MaterialTheme.colorScheme.primary
+                                else
+                                    MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Spacer(Modifier.width(12.dp))
+                            Text(
+                                text = "Sensitive Notification Access",
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        }
+                        Spacer(Modifier.height(8.dp))
+                        Text(
+                            text = "Required on Android 15+ so OTP Guard can read the full content of notifications. Without this, OTP codes in messages may be hidden and cannot be detected.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        if (!isSensitiveNotifGranted) {
+                            Spacer(Modifier.height(12.dp))
+                            Button(
+                                onClick = {
+                                    sensitiveNotifLauncher?.launch(
+                                        Manifest.permission.RECEIVE_SENSITIVE_NOTIFICATIONS
+                                    )
+                                },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Text("Grant Permission")
+                            }
+                        }
+                    }
                 }
             }
 

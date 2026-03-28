@@ -129,12 +129,6 @@ fun HomeScreen(
             ActionItem(Icons.Default.History, "Detection Log", "View past detections") {
                 navController.navigate(Screen.DetectionLog.route)
             }
-            ActionItem(Icons.Default.Apps, "Monitored Apps", "Manage monitored apps") {
-                navController.navigate(Screen.MonitoredApps.route)
-            }
-            ActionItem(Icons.Default.Code, "Regex Rules", "Manage detection rules") {
-                navController.navigate(Screen.RegexRules.route)
-            }
         }
     }
 }

@@ -1,0 +1,64 @@
+# Gradle files
+.gradle/
+build/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/**/build/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Android Studio / IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+.navigation/
+captures/
+*.hprof
+
+# Kotlin
+.kotlin/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+# Android Studio generated files
+.externalNativeBuild/
+.cxx/
+
+# Keystore files (IMPORTANT - never commit these!)
+*.jks
+*.keystore
+*.p12
+*.key
+
+# Google Services (API keys, etc)
+google-services.json
+
+# Room database schemas (optional - some teams commit these)
+# app/schemas/
+
+# Crashlytics/Fabric
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
+
+# Version control
+vcs.xml
+
+# Misc
+*.swp
+*.swo
+*~
+
+# Claude Code (Anthropic CLI)
+.claude/
+.claude-code/
+.anthropic/
+claude-code-cache/
