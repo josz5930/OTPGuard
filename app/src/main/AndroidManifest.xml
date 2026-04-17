@@ -21,7 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OTPGuard"
         android:usesCleartextTraffic="false"
-        tools:targetApi="34">
+        tools:targetApi="36">
 
         <!-- Main Activity -->
         <activity
@@ -56,6 +56,18 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
+        <!-- Disable default WorkManager initializer; custom init via Configuration.Provider -->
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
 
     </application>
 

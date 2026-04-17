@@ -4,9 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.otpguard.ui.screen.apps.MonitoredAppsScreen
 import com.otpguard.ui.screen.home.HomeScreen
 import com.otpguard.ui.screen.log.DetectionLogScreen
 import com.otpguard.ui.screen.onboarding.OnboardingScreen
+import com.otpguard.ui.screen.rules.RegexRulesScreen
 import com.otpguard.ui.screen.settings.SettingsScreen
 
 @Composable
@@ -26,6 +28,12 @@ fun OtpGuardNavGraph(
         }
         composable(Screen.Settings.route) {
             SettingsScreen(navController = navController)
+        }
+        composable(Screen.MonitoredApps.route) {
+            MonitoredAppsScreen(navController = navController)
+        }
+        composable(Screen.RegexRules.route) {
+            RegexRulesScreen(navController = navController)
         }
     }
 }

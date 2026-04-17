@@ -33,7 +33,6 @@ The following are known features that are missing or known bugs:
 3.  **No Data Export:** No analytics, telemetry, or cloud sync.
 
 ### Integrity
-*   **Hash Chain:** The `detection_event` table uses a hash chain (`row_hash`) to enable offline tamper detection. Users can verify log integrity via the "Verify Log Integrity" action.
 *   **Regex Safeguards:** Regex evaluation is time-boxed (200ms timeout) to prevent denial-of-service via complex patterns.
 *   **Input Validation:** All user inputs are validated at the GUI layer against rules stored in `input_validation_rule` before persistence.
 
@@ -73,8 +72,7 @@ Stores regex patterns used to detect OTP content.
 
 ### 4. `detection_event`
 Audit log of every OTP detection and service state change. **No PII or OTP values are stored.**
-*   **Key Change:** Added `event_type` (`detection`, `service_toggle), `timeout`, `new_service_state`, and `row_hash`.
-*   **Hash Chain:** `row_hash` implements a sequential hash chain (`SHA-256`) for tamper evidence.
+*   **Key Change:** Added `event_type` (`detection`, `service_toggle`), `timeout`, and `new_service_state`.
 *   **Lifecycle:** INSERT-only. Rows are pruned nightly based on `log_retention_days`.
 
 ### 5. `app_config`

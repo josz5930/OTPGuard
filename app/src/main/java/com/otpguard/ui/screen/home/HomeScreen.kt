@@ -129,6 +129,12 @@ fun HomeScreen(
             ActionItem(Icons.Default.History, "Detection Log", "View past detections") {
                 navController.navigate(Screen.DetectionLog.route)
             }
+            ActionItem(Icons.Default.Apps, "Monitored Apps", "Manage apps to scan") {
+                navController.navigate(Screen.MonitoredApps.route)
+            }
+            ActionItem(Icons.Default.Rule, "Regex Rules", "Manage OTP detection patterns") {
+                navController.navigate(Screen.RegexRules.route)
+            }
         }
     }
 }

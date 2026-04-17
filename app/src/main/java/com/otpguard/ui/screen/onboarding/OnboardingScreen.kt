@@ -40,7 +40,7 @@ fun OnboardingScreen(navController: NavController) {
         isAccessGranted = NotificationAccessHelper.isNotificationAccessEnabled(context)
         if (Build.VERSION.SDK_INT >= 35) {
             isSensitiveNotifGranted = ContextCompat.checkSelfPermission(
-                context, Manifest.permission.RECEIVE_SENSITIVE_NOTIFICATIONS
+                context, "android.permission.RECEIVE_SENSITIVE_NOTIFICATIONS"
             ) == PackageManager.PERMISSION_GRANTED
         }
     }
@@ -211,7 +211,7 @@ fun OnboardingScreen(navController: NavController) {
                             Button(
                                 onClick = {
                                     sensitiveNotifLauncher?.launch(
-                                        Manifest.permission.RECEIVE_SENSITIVE_NOTIFICATIONS
+                                        "android.permission.RECEIVE_SENSITIVE_NOTIFICATIONS"
                                     )
                                 },
                                 modifier = Modifier.fillMaxWidth()
