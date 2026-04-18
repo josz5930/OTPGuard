@@ -24,7 +24,7 @@ class DetectionEventRepositoryImpl @Inject constructor(
 
     override fun getCountSince(since: Long): Flow<Int> = dao.getCountSince(since)
 
-    override suspend fun getRecentNotificationKeys(since: Long): List<String?> =
+    override suspend fun getRecentNotificationKeys(since: Long): List<String> =
         dao.getRecentNotificationKeys(since)
 
     override suspend fun deleteOlderThan(before: Long) = dao.deleteOlderThan(before)

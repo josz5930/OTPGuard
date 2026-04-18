@@ -10,7 +10,7 @@ interface DetectionEventRepository {
     suspend fun insert(event: DetectionEventEntity): Long
     fun getTotalCount(): Flow<Int>
     fun getCountSince(since: Long): Flow<Int>
-    suspend fun getRecentNotificationKeys(since: Long): List<String?>
+    suspend fun getRecentNotificationKeys(since: Long): List<String>
     suspend fun deleteOlderThan(before: Long)
     suspend fun getAllEventsForHashing(): List<DetectionEventEntity>
     suspend fun updateRowHash(id: Int, hash: String)

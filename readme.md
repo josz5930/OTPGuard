@@ -95,11 +95,11 @@ Default configuration values are stored in `app_config`. Key settings include:
 | `regex_timeout_ms` | `"200"` | Timeout for regex evaluation. |
 | `collapse_window_ms` | `"5000"` | Deduplicate warnings within this window. |
 
+## License
 
+This project is licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 
-## 📄 License
-
-This code for OTP Cautioner is released under ([CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.en))
+[<image-card alt="CC BY-NC-SA 4.0" src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg" ></image-card>](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 ---
 

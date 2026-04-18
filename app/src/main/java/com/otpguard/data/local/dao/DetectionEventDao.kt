@@ -28,8 +28,8 @@ interface DetectionEventDao {
     @Query("SELECT COUNT(*) FROM detection_event WHERE detected_at >= :since")
     fun getCountSince(since: Long): Flow<Int>
 
-    @Query("SELECT notification_key FROM detection_event WHERE detected_at >= :since")
-    suspend fun getRecentNotificationKeys(since: Long): List<String?>
+    @Query("SELECT notification_key FROM detection_event WHERE detected_at >= :since AND notification_key IS NOT NULL")
+    suspend fun getRecentNotificationKeys(since: Long): List<String>
 
     @Query("DELETE FROM detection_event WHERE detected_at < :before")
     suspend fun deleteOlderThan(before: Long)
