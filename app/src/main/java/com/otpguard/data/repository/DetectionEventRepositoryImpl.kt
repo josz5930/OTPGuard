@@ -33,4 +33,6 @@ class DetectionEventRepositoryImpl @Inject constructor(
         dao.getAllEventsForHashing()
 
     override suspend fun updateRowHash(id: Int, hash: String) = dao.updateRowHash(id, hash)
+
+    override suspend fun getPreviousRowHash(beforeId: Int): String? = dao.getPreviousRowHash(beforeId)
 }

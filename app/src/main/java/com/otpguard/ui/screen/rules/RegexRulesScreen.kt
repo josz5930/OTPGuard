@@ -109,9 +109,30 @@ fun RegexRulesScreen(
             title = { Text("Add Custom Rule") },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text("Rule Name") }, singleLine = true)
-                    OutlinedTextField(value = pattern, onValueChange = { pattern = it }, label = { Text("Regex Pattern") }, singleLine = true)
-                    OutlinedTextField(value = description, onValueChange = { description = it }, label = { Text("Description (optional)") }, singleLine = true)
+                    OutlinedTextField(
+                        value = name,
+                        onValueChange = { name = it },
+                        label = { Text("Rule Name") },
+                        singleLine = true,
+                        isError = uiState.validationErrors.containsKey("name"),
+                        supportingText = uiState.validationErrors["name"]?.let { { Text(it) } }
+                    )
+                    OutlinedTextField(
+                        value = pattern,
+                        onValueChange = { pattern = it },
+                        label = { Text("Regex Pattern") },
+                        singleLine = true,
+                        isError = uiState.validationErrors.containsKey("pattern"),
+                        supportingText = uiState.validationErrors["pattern"]?.let { { Text(it) } }
+                    )
+                    OutlinedTextField(
+                        value = description,
+                        onValueChange = { description = it },
+                        label = { Text("Description (optional)") },
+                        singleLine = true,
+                        isError = uiState.validationErrors.containsKey("description"),
+                        supportingText = uiState.validationErrors["description"]?.let { { Text(it) } }
+                    )
                     OutlinedTextField(value = testText, onValueChange = { testText = it }, label = { Text("Test Text (optional)") }, singleLine = true)
                     if (testText.isNotBlank() && pattern.isNotBlank()) {
                         TextButton(onClick = {

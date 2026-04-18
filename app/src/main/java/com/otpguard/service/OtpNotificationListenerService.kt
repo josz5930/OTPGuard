@@ -46,7 +46,6 @@ class OtpNotificationListenerService : NotificationListenerService() {
 
     private val serviceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val handler = Handler(Looper.getMainLooper())
-    private var lastWarningTime = 0L
 
     override fun onCreate() {
         super.onCreate()
@@ -140,9 +139,8 @@ class OtpNotificationListenerService : NotificationListenerService() {
                 Log.d(TAG, "Detection result: isOtp=${result.isOtpDetected}, appId=${result.sourceAppId}, ruleId=${result.matchedRuleId}")
 
                 if (result.isOtpDetected && result.sourceAppId != null && result.matchedRuleId != null) {
-                    val collapseWindowMs = appConfigRepository.getLong(ConfigKeys.COLLAPSE_WINDOW_MS, 5000L)
+                    val shouldCollapse = logDetectionEventUseCase.shouldCollapseWarning(sbn.key)
                     val now = System.currentTimeMillis()
-                    val shouldCollapse = (now - lastWarningTime) < collapseWindowMs
 
                     val app = monitoredAppRepository.getById(result.sourceAppId)
                     var templateId: Int? = null
@@ -150,7 +148,6 @@ class OtpNotificationListenerService : NotificationListenerService() {
                     if (!shouldCollapse && app != null) {
                         val template = resolveTemplateUseCase.execute(app)
                         templateId = template.id
-                        lastWarningTime = now
                         val rendered = resolveTemplateUseCase.renderTemplate(
                             template = template,
                             appName = app.displayName,
@@ -270,9 +267,6 @@ class OtpNotificationListenerService : NotificationListenerService() {
         val manager = getSystemService(NotificationManager::class.java)
 
         Log.d(TAG, "Notifying with ID: ${NotificationConstants.WARNING_NOTIFICATION_ID}")
-        manager.notify(NotificationConstants.WARNING_NOTIFICATION_ID, notification)
-
-        // Also cancel any existing notification first to ensure heads-up shows
         manager.cancel(NotificationConstants.WARNING_NOTIFICATION_ID)
         manager.notify(NotificationConstants.WARNING_NOTIFICATION_ID, notification)
 

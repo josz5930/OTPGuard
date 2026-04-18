@@ -39,4 +39,7 @@ interface DetectionEventDao {
 
     @Query("UPDATE detection_event SET row_hash = :hash WHERE id = :id")
     suspend fun updateRowHash(id: Int, hash: String)
+
+    @Query("SELECT row_hash FROM detection_event WHERE id < :beforeId AND row_hash IS NOT NULL ORDER BY id DESC LIMIT 1")
+    suspend fun getPreviousRowHash(beforeId: Int): String?
 }

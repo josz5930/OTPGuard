@@ -4,6 +4,7 @@ import com.otpguard.data.local.entity.DetectionEventEntity
 import com.otpguard.domain.repository.AppConfigRepository
 import com.otpguard.domain.repository.DetectionEventRepository
 import com.otpguard.util.EventTypes
+import java.security.MessageDigest
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -29,7 +30,9 @@ class LogDetectionEventUseCase @Inject constructor(
             warningPosted = warningPosted,
             timeout = timeout
         )
-        return detectionEventRepository.insert(event)
+        val id = detectionEventRepository.insert(event)
+        writeRowHash(id.toInt(), event)
+        return id
     }
 
     suspend fun logServiceToggle(newState: String): Long {
@@ -42,7 +45,9 @@ class LogDetectionEventUseCase @Inject constructor(
             warningPosted = false,
             timeout = false
         )
-        return detectionEventRepository.insert(event)
+        val id = detectionEventRepository.insert(event)
+        writeRowHash(id.toInt(), event)
+        return id
     }
 
     suspend fun shouldCollapseWarning(notificationKey: String?): Boolean {
@@ -51,5 +56,23 @@ class LogDetectionEventUseCase @Inject constructor(
         val since = (System.currentTimeMillis() / 1000) - (collapseWindowMs / 1000)
         val recentKeys = detectionEventRepository.getRecentNotificationKeys(since)
         return recentKeys.any { it == notificationKey }
+    }
+
+    private suspend fun writeRowHash(id: Int, event: DetectionEventEntity) {
+        val previous = detectionEventRepository.getPreviousRowHash(id) ?: "GENESIS"
+        val input = buildString {
+            append(id); append("|")
+            append(event.eventType); append("|")
+            append(event.appId?.toString() ?: "NULL"); append("|")
+            append(event.ruleId?.toString() ?: "NULL"); append("|")
+            append(event.detectedAt); append("|")
+            append(previous)
+        }
+        detectionEventRepository.updateRowHash(id, sha256(input))
+    }
+
+    private fun sha256(input: String): String {
+        val bytes = MessageDigest.getInstance("SHA-256").digest(input.toByteArray(Charsets.UTF_8))
+        return bytes.joinToString("") { "%02x".format(it) }
     }
 }

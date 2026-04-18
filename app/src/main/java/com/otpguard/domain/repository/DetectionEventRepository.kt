@@ -14,4 +14,5 @@ interface DetectionEventRepository {
     suspend fun deleteOlderThan(before: Long)
     suspend fun getAllEventsForHashing(): List<DetectionEventEntity>
     suspend fun updateRowHash(id: Int, hash: String)
+    suspend fun getPreviousRowHash(beforeId: Int): String?
 }

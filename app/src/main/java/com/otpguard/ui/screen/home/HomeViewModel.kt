@@ -41,7 +41,13 @@ class HomeViewModel @Inject constructor(
     fun toggleService(enabled: Boolean) {
         viewModelScope.launch {
             appConfigRepository.set(ConfigKeys.SERVICE_ENABLED, enabled.toString())
-            _uiState.update { it.copy(isServiceActive = enabled) }
+            val accessGranted = NotificationAccessHelper.isNotificationAccessEnabled(getApplication())
+            _uiState.update {
+                it.copy(
+                    isServiceActive = enabled && accessGranted,
+                    isNotificationAccessGranted = accessGranted
+                )
+            }
         }
     }
 

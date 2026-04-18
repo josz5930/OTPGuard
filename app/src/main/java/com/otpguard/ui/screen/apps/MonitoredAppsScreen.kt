@@ -78,8 +78,23 @@ fun MonitoredAppsScreen(
             title = { Text("Add Monitored App") },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(value = displayName, onValueChange = { displayName = it }, label = { Text("App Name") }, singleLine = true)
-                    OutlinedTextField(value = packageName, onValueChange = { packageName = it }, label = { Text("Package Name") }, singleLine = true, placeholder = { Text("com.example.app") })
+                    OutlinedTextField(
+                        value = displayName,
+                        onValueChange = { displayName = it },
+                        label = { Text("App Name") },
+                        singleLine = true,
+                        isError = uiState.validationErrors.containsKey("display_name"),
+                        supportingText = uiState.validationErrors["display_name"]?.let { { Text(it) } }
+                    )
+                    OutlinedTextField(
+                        value = packageName,
+                        onValueChange = { packageName = it },
+                        label = { Text("Package Name") },
+                        singleLine = true,
+                        placeholder = { Text("com.example.app") },
+                        isError = uiState.validationErrors.containsKey("package_name"),
+                        supportingText = uiState.validationErrors["package_name"]?.let { { Text(it) } }
+                    )
                 }
             },
             confirmButton = {

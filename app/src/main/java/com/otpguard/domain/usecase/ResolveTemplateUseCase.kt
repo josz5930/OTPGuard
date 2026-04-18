@@ -88,8 +88,8 @@ class ResolveTemplateUseCase @Inject constructor(
         return value
             .filter { it >= ' ' || it == '\t' || it == '\n' }
             .take(100)
-            .replace("{{", "&#123;&#123;")
-            .replace("}}", "&#125;&#125;")
+            .replace("{{", "{ {")
+            .replace("}}", "} }")
     }
 
     private fun createFallbackTemplate(): WarningTemplateEntity {
