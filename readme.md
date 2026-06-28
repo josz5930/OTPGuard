@@ -1,3 +1,7 @@
+# Notice - Superceded 
+Whatsapp has released a linked device alert, which should natively solve this problem for whatsapp.
+https://businessday.ng/technology/article/whatsapp-introduces-linked-device-alerts-to-help-users-detect-account-takeover-attempts/
+
 # OTP Cautioner
 
 **OTP Cautioner** (also known as "OTP Guard") is a lightweight, offline Android application that passively monitors incoming notifications from messaging apps (e.g. SMS) for OTP/verification code patterns. Upon detection, it immediately surfaces a prominent warning notification to alert the user against sharing the code with anyone.
